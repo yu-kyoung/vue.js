@@ -15,6 +15,7 @@
       </thead>
       <tbody>
         <tr v-bind:key="i" v-for="(product, i) in productList">
+          <!--i =  인덱스 값-->
           <td>{{ product.product_name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.category }}</td>

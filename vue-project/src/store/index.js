@@ -18,6 +18,7 @@ export default createStore({
     },
   },
   mutations: {
+    //기능구현장소
     addTodo(state, name) {
       const id = state.todos[state.todos.length - 1].id;
       const todo = {

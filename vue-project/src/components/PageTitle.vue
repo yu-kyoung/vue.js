@@ -20,6 +20,7 @@ export default {
     };
   },
   props: {
+    //상위 요소 에서 하위 요소로
     title: { type: String, default: "페이지 제목" },
     likes: { type: Number, default: 0 },
     isOK: { type: Boolean, default: false },

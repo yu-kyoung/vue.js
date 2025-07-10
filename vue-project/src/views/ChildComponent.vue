@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.$emit("send-message", this.msg);
+      this.$emit("send-message", this.msg); //하위에서 상위로 정보전달
       // this.$parent.msg = this.msg;
       // this.$root.msg = this.msg;
     },

@@ -95,7 +95,103 @@ export default {
     };
   },
   methods: {
+    kakaoLogin() {
+      window.Kakao.Auth.login({
+        scope: "profile_nickname, account_email",
+        success: this.getKakaoAccount,
+      });
+    },
+    getKakaoAccount() {
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (res) => {
+          console.log(res);
+          const kakao_account = res.kakao_account;
+          const nickname = kakao_account.profile.nickname;
+          const email = kakao_account.email;
+          console.log(nickname, email);
+          this.login(kakao_account);
+          alert("로그인 성공");
+          this.user = { email: email };
+        },
+        fail: (err) => {
+          console.log(err);
+          alert("tlfvo");
+        },
+      });
+    },
+    async login(account) {
+      await this.$api("/api/singUp", {
+        param: [
+          { email: account.email, nickname: account.nickname, type: 1 },
+          account.email,
+        ],
+      });
+      console.log("insert!");
+    },
+
     setPage() {},
+    logout() {
+      window.Kakao.Auth.logout((response) => {
+        console.log(response);
+      });
+      alert("로그아웃");
+      this.user = {};
+      this.$router.push({ path: "/list" });
+    },
   },
 };
+
+// export default {
+//   data() {
+//     return {
+//       page: "",
+//       user: { email: "" },
+//     };
+//   },
+//   mounted() {
+//     if (window.Kakao && !window.Kakao.isInitialized()) {
+//       window.Kakao.init("여기에_당신의_Kakao_JavaScript_키");
+//       console.log("Kakao SDK 초기화 완료");
+//     }
+//   },
+//   methods: {
+//     kakaoLogin() {
+//       if (!window.Kakao || !window.Kakao.Auth) {
+//         alert("Kakao SDK가 로드되지 않았습니다.");
+//         return;
+//       }
+
+//       window.Kakao.Auth.login({
+//         scope: "profile_nickname, account_email",
+//         success: this.getKakaoAccount,
+//         fail: (err) => {
+//           console.error("로그인 실패", err);
+//         },
+//       });
+//     },
+//     getKakaoAccount() {
+//       window.Kakao.API.request({
+//         url: "/v2/user/me",
+//         success: (res) => {
+//           const kakao_account = res.kakao_account;
+//           const email = kakao_account.email;
+//           alert("로그인 성공");
+//           this.user = { email: email };
+//         },
+//         fail: (err) => {
+//           console.error(err);
+//           alert("계정 정보를 가져오는 데 실패했습니다.");
+//         },
+//       });
+//     },
+//     setPage() {},
+
+//     logout() {
+//       alert("로그아웃");
+//       this.user = {};
+//       this.$router.push({ path: "/list" });
+//     },
+//   },
+// };
 </script>
